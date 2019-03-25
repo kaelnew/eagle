@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: eagle_dev
+
+test:
+  <<: *default
+  database: eagle_test
+
+production:
+  <<: *default
+  database: eagle_pro
+  username: eagle
+  password: <%= ENV['EAGLE_DATABASE_PASSWORD'] %>

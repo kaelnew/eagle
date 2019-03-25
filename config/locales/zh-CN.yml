@@ -1,0 +1,8 @@
+"zh-CN":
+  user:
+    name_uniqueness_error: 用户昵称已被占用
+    login_fail: 用户名或密码错误
+
+
+  server:
+    exception: 服务暂不可用

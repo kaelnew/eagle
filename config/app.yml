@@ -1,0 +1,27 @@
+# config/app.yml for rails-settings-cached
+defaults: &defaults
+  responses:
+    suc:
+      code: 0
+      msg: ''
+    client_error:
+      code: 1
+      msg: params error
+    server_error:
+      code: 2
+      msg: server exception
+    unauthorized:
+      code: 4
+      msg: unauthorized
+      status: 401
+
+  token_expire_duration: 604800 #1.week
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults
