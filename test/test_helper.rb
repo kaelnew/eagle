@@ -42,6 +42,18 @@ class ActiveSupport::TestCase
     Base64.encode64(rsa_encrypted_pwd)
   end
 
+  def administrator_token
+    @administrator_token ||= administrator.generate_token!
+  end
+
+  def davi
+    @davi ||= users(:davi)
+  end
+
+  def davi_token
+    @davi_token ||= davi.generate_token!
+  end
+
   def mth
     @mth ||= MyTestHelper.new
   end

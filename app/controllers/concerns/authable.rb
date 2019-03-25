@@ -5,6 +5,8 @@ module Authable
     before_action :auth!
   end
 
+  private
+
   def auth!
     @headers = request.headers
     token = @headers['HTTP_AUTHORIZATION'].match(/^Bearer (.*)/m).to_a.last
@@ -14,5 +16,9 @@ module Authable
     return render_unauthorized if !current_user.auth!(token)
   rescue => e
     return render_unauthorized
+  end
+
+  def auth_super!
+    return render_unauthorized if !current_user.super?
   end
 end

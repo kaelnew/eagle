@@ -58,12 +58,14 @@ ActiveRecord::Schema.define(version: 2019_03_14_034925) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "uuid"
     t.string "name"
     t.string "avatar"
     t.string "encrypted_password"
     t.string "rsa_pub_key"
     t.datetime "rsa_pub_key_created_at"
+    t.integer "role", default: 0
+    t.integer "delete_status", default: 0
+    t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

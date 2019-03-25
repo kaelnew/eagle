@@ -14,3 +14,4 @@
   * deploy: `capistrano`
   * language: `i18n`
   * test: `Minitest simplecov`
+  * data_history: `paper_trail`

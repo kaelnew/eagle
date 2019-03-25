@@ -1,0 +1,1 @@
+json.partial! 'jshared/code_msg', code: Setting.responses['suc']['code'], msg: Setting.responses['suc']['msg']

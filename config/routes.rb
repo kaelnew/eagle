@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       get :alive, to: 'application#alive'
 
-      resources :users, except: %i(new edit show)
+      resources :users, except: %i(new edit)
       post :login, to: 'users#login'
       post :logout, to: 'users#logout'
     end

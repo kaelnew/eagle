@@ -28,3 +28,4 @@
 /config/database.yml
 .rvmrc
 /lib/test.rb
+/coverage/*

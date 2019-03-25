@@ -1,6 +1,13 @@
 administrator:
   id: 1
-  uuid: 12345678
   name: 'admin'
   avatar: 'avatar'
   encrypted_password: "$2a$10$V4lvQSn454LhmjfxmLGMzOD2x8V/5fhoQ.qeiPQyGebioPUFLkcdi"
+  role: 1
+
+davi:
+  id: 2
+  name: 'davi'
+  avatar: 'avatar'
+  encrypted_password: "$2a$10$V4lvQSn454LhmjfxmLGMzOD2x8V/5fhoQ.qeiPQyGebioPUFLkcdi"
+  role: 0

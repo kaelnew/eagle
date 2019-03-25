@@ -12,7 +12,7 @@ class UserTest < ActiveSupport::TestCase
     assert ua.save
     ub = User.new({name: administrator.name})
     assert_not ub.save
-    assert_equal I18n.t('user.name_uniqueness_error'), ub.errors.values.first.first
+    assert_equal I18n.t('user.name_uniqueness_error'), ub.error_msg
   end
 
   test 'authable' do
@@ -24,5 +24,10 @@ class UserTest < ActiveSupport::TestCase
 
   test 'login!' do
     assert administrator.login!(administrator_pwd)
+  end
+
+  test 'role' do
+    assert administrator.super?
+    assert davi.common?
   end
 end
