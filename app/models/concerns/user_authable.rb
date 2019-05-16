@@ -11,7 +11,7 @@ module UserAuthable
     update!(rsa_pub_key: rsa_public, rsa_pub_key_created_at: @now) ? token : false
   end
 
-  def auth!(token)
+  def auth?(token)
     rsa_public = OpenSSL::PKey::RSA.new(rsa_pub_key)
     JWT.decode(token, rsa_public, true, ALG_OF_RSA256)
   rescue => e
@@ -23,11 +23,17 @@ module UserAuthable
     {id: id, exp: @now.to_i + Setting.token_expire_duration}
   end
 
-  def login!(encoded_pwd)
+  def login?(encoded_pwd)
     decoded_pwd = Base64.decode64(encoded_pwd)
     password == RSA_PRIVATE_KEY.private_decrypt(decoded_pwd)
   rescue => e
     return false
+  end
+
+  module ClassMethods
+    def decrypt_password(encrypted_password)
+      RSA_PRIVATE_KEY.private_decrypt(Base64.decode64(encrypted_password))
+    end
   end
   
 end

@@ -3,3 +3,6 @@
 
 CREDENTIALS = Rails.application.credentials
 RSA_PRIVATE_KEY = OpenSSL::PKey::RSA.new(CREDENTIALS[:rsa_private_key])
+
+# ActsAsTaggableOn
+ActsAsTaggableOn.strict_case_match = true

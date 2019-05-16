@@ -2,7 +2,7 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   test "password" do
-    assert administrator.password == SHORT_PASSWORD
+    assert administrator.password == User::DEFAULT_PASSWORD
     administrator.password = LONG_PASSWORD
     assert administrator.reload.password == LONG_PASSWORD
   end
@@ -18,16 +18,22 @@ class UserTest < ActiveSupport::TestCase
   test 'authable' do
     token = administrator.generate_token!
     assert token
-    decoded_token = administrator.auth!(token)
+    decoded_token = administrator.auth?(token)
     assert decoded_token
   end
 
   test 'login!' do
-    assert administrator.login!(administrator_pwd)
+    assert administrator.login?(default_pwd)
   end
 
   test 'role' do
     assert administrator.super?
     assert davi.common?
+  end
+
+  test "relations" do
+    mrs = davi.money_records.to_a
+    assert outgo.in?(mrs)
+    assert income.in?(mrs)
   end
 end

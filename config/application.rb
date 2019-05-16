@@ -9,6 +9,7 @@ Bundler.require(*Rails.groups)
 module Eagle
   class Application < Rails::Application
     config.load_defaults 5.2
+    config.active_record.belongs_to_required_by_default = false
 
     config.active_record.default_timezone = :local
     config.time_zone = 'Beijing'

@@ -15,7 +15,43 @@ defaults: &defaults
       msg: unauthorized
       status: 401
 
+  accesses:
+    super: ['super_admin']
+    common: ['common']
+  
+
   token_expire_duration: 604800 #1.week
+  per_page: 50 #分页时每页的条数
+
+  money_records_tags:
+    salary: 工资
+    food: 饮食
+    daily: 起居
+    clothes: 穿着
+    sport: 运动
+    living: 住房
+    traffic: 交通
+    home: 家庭内部
+    communicate: 通讯
+    electronic: 电子产品
+    skin: 护肤
+    learn: 学习
+    travel: 旅游
+    gift: 礼物
+    entertain: 娱乐
+    insurance: 保险
+    child: 育儿
+    parent: 养老
+    human: 人情
+    medical: 医疗
+    invest: 投资
+    houseloan: 房贷
+    houserent: 房租
+    borrow: 借债
+    debt: 欠债
+    claim: 理赔
+    other: 其他
+  
 
 development:
   <<: *defaults

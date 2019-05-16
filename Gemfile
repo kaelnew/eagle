@@ -28,7 +28,8 @@ gem 'kaminari', '~> 1.1.1' #分页
 gem 'rails-settings-cached', '~> 0.7.2' #缓存
 gem 'rack-cors', :require => 'rack/cors'
 gem 'jwt'
-gem 'suggest_rb'
+gem 'suggest_rb' # 用于反向查询method
+gem 'acts-as-taggable-on', '~> 6.0'
 
 
 group :development, :test do

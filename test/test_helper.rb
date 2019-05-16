@@ -36,9 +36,21 @@ class ActiveSupport::TestCase
     @administrator ||= users(:administrator)
   end
 
-  def administrator_pwd
+  def default_pwd
     rsa_public = RSA_PRIVATE_KEY.public_key
-    rsa_encrypted_pwd = rsa_public.public_encrypt(SHORT_PASSWORD)
+    rsa_encrypted_pwd = rsa_public.public_encrypt(User::DEFAULT_PASSWORD)
+    Base64.encode64(rsa_encrypted_pwd)
+  end
+
+  def empty_pwd
+    rsa_public = RSA_PRIVATE_KEY.public_key
+    rsa_encrypted_pwd = rsa_public.public_encrypt('')
+    Base64.encode64(rsa_encrypted_pwd)
+  end
+
+  def new_password
+    rsa_public = RSA_PRIVATE_KEY.public_key
+    rsa_encrypted_pwd = rsa_public.public_encrypt(LONG_PASSWORD)
     Base64.encode64(rsa_encrypted_pwd)
   end
 
@@ -58,6 +70,10 @@ class ActiveSupport::TestCase
     @mth ||= MyTestHelper.new
   end
 
+  def mth_responses
+    @mth_responses ||= mth.responses
+  end
+
   def login_client_error
     @lce ||= Hashie::Mash.new(mth.login_client_error)
   end
@@ -72,5 +88,13 @@ class ActiveSupport::TestCase
 
   def request_headers(token)
     {Authorization: "Bearer #{token}", Accept: 'application/json'}
+  end
+
+  def income
+    @income ||= money_records(:income)
+  end
+
+  def outgo
+    @outgo ||= money_records(:outgo)
   end
 end

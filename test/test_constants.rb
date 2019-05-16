@@ -1,2 +1,1 @@
-SHORT_PASSWORD = '123456'
 LONG_PASSWORD = 'ab3cde4fghijk6lmn'

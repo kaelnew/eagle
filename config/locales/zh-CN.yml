@@ -1,8 +1,12 @@
 "zh-CN":
   user:
-    name_uniqueness_error: 用户昵称已被占用
+    name_uniqueness_error: 昵称已被占用
+    name_blank_error: 昵称不能为空
     login_fail: 用户名或密码错误
+    password_confirm_error: 两次输入的密码不一致
 
+  money_record:
+    tag_blank_error: 标签不能为空
 
   server:
     exception: 服务暂不可用
