@@ -3,9 +3,10 @@ class Api::V1::UsersController < Api::V1::ApplicationController
   before_action :auth_super, only: %i(index create destroy)
   before_action :set_user, only: %i(show update destroy)
   before_action :predeal_password, only: %i(create update)
+  before_action :set_page_default_params, only: :index
 
   def index
-    @users = User.all
+    @users = User.order(:id).page(params[:page]).per(params[:per])
   end
 
   def create

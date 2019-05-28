@@ -21,12 +21,9 @@ ActiveRecord::Schema.define(version: 2019_05_07_073963) do
     t.string "login"
     t.string "encrypted_password"
     t.string "url"
-    t.string "note"
-    t.integer "use_status", default: 0
-    t.datetime "deleted_at"
+    t.string "remark"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["use_status"], name: "index_accounts_on_use_status"
     t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
@@ -43,12 +40,6 @@ ActiveRecord::Schema.define(version: 2019_05_07_073963) do
     t.index ["income_flag"], name: "index_money_records_on_income_flag"
     t.index ["parent_id"], name: "index_money_records_on_parent_id"
     t.index ["user_id"], name: "index_money_records_on_user_id"
-  end
-
-  create_table "questions", force: :cascade do |t|
-    t.string "title"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "settings", force: :cascade do |t|
@@ -84,17 +75,6 @@ ActiveRecord::Schema.define(version: 2019_05_07_073963) do
     t.string "name"
     t.integer "taggings_count", default: 0
     t.index ["name"], name: "index_tags_on_name", unique: true
-  end
-
-  create_table "user_answers", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "question_id"
-    t.string "question_title"
-    t.string "encrypted_answer"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["question_id"], name: "index_user_answers_on_question_id"
-    t.index ["user_id"], name: "index_user_answers_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

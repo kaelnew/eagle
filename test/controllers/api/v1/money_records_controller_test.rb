@@ -28,9 +28,9 @@ class Api::V1::MoneyRecordsControllerTest < ActionDispatch::IntegrationTest
     assert_equal suc.msg, jbody.msg
     data = jbody.data
     page_info = data.page_info
-    assert page_info.current_page = 1
-    assert page_info.total_count = 2
-    assert page_info.total_pages = 1
+    assert 1 == page_info.current_page
+    assert 2 == page_info.total_count
+    assert 1 == page_info.total_pages
     assert data.money_records.collect {|mr| mr['id']} == davi.money_records.pluck(:id)
     imr = data.invest_money_records.first
     assert imr.label == '2019-05-07 支出100.0: 存款'

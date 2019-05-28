@@ -30,7 +30,12 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
     get api_v1_users_path, headers: request_headers(administrator_token)
     assert_equal suc.code, jbody.code
     assert_equal suc.msg, jbody.msg
-    assert_equal User.alive.pluck(:id), jbody.data.map(&:id)
+    data = jbody.data
+    page_info = data.page_info
+    assert 1 == page_info.current_page
+    assert 2 == page_info.total_count
+    assert 1 == page_info.total_pages
+    assert data.users.collect {|user| user['id']} == User.order(:id).pluck(:id)
   end
 
   test "create with empty password" do
