@@ -14,6 +14,21 @@ class Api::V1::MoneyRecordsController < Api::V1::ApplicationController
     @total_houserent = @mrs.tagged_with(:houserent).sum(:amount).to_f #总的房租支出
   end
 
+  def static_tag_percent
+    @mrs = current_user.money_records
+    @mrs = @mrs.start_at(params[:start_at]) if params[:start_at].present?
+    @mrs = @mrs.end_at(params[:end_at]) if params[:end_at].present?
+    @income_mrs = @mrs.income
+    @outgo_mrs = @mrs.outgo
+    @income_tags = MoneyRecord.tags(@income_mrs)
+    @outgo_tags = MoneyRecord.tags(@outgo_mrs) - %w(invest houseloan houserent)
+    @totals = [Chart::Pie.new(@income_mrs.sum(:amount).to_f, I18n.t('money_record.income')),
+               Chart::Pie.new(@outgo_mrs.sum(:amount).to_f, I18n.t('money_record.outgo'))]
+
+    @incomes = @income_tags.collect {|tag| Chart::Pie.new(@income_mrs.tagged_with(tag).sum(:amount).to_f, Setting.money_records_tags[tag])}
+    @outgos = @outgo_tags.collect {|tag| Chart::Pie.new(@outgo_mrs.tagged_with(tag).sum(:amount).to_f, Setting.money_records_tags[tag])}
+  end
+
   def index
     @mrs = current_user.money_records.happened_at_desc.page(params[:page]).per(params[:per])
     @invest_mrs = current_user.money_records.outgo.tagged_with(:invest)

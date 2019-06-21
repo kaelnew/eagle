@@ -1,0 +1,51 @@
+food:
+  id: 1
+  name: 'food'
+
+entertain:
+  id: 2,
+  name: 'entertain'
+
+sport:
+  id: 3,
+  name: 'sport'
+
+traffic:
+  id: 4,
+  name: 'traffic'
+
+human:
+  id: 5,
+  name: 'human'
+
+houseloan:
+  id: 6,
+  name: 'houseloan'
+
+invest:
+  id: 7,
+  name: 'invest'
+
+salary:
+  id: 8,
+  name: 'salary'
+
+electronic:
+  id: 9,
+  name: 'electronic'
+
+houserent:
+  id: 10,
+  name: 'houserent'
+
+communicate:
+  id: 11,
+  name: 'communicate'
+
+living:
+  id: 12,
+  name: 'living'
+
+daily:
+  id: 13,
+  name: 'daily'

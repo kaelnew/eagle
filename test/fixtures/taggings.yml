@@ -1,0 +1,13 @@
+outgo_money_record:
+  id: 1
+  tag_id: 7
+  taggable_type: MoneyRecord
+  taggable_id: 1
+  context: tags
+
+income_money_record:
+  id: 2
+  tag_id: 7
+  taggable_type: MoneyRecord
+  taggable_id: 2
+  context: tags

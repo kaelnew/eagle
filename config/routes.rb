@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get :alive, to: 'application#alive'
+      get :ping, to: 'application#ping'
       get :user_info, to: 'users#user_info'
 
       resources :users, except: %i(new edit) do
@@ -16,6 +17,7 @@ Rails.application.routes.draw do
         collection do
           get :all_tag
           get :static
+          get :static_tag_percent
         end
       end
     end

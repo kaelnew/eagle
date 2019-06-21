@@ -146,9 +146,7 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
     end
     sleep(1-realtime)
     post api_v1_logout_path, headers: request_headers(token)
-    assert status == unauthorized.status
-    unauthorized.delete(:status)
-    assert unauthorized == jbody
+    assert unauthorized == jbody_with_status
   end
 
   test "user_info" do

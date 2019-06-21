@@ -18,6 +18,9 @@ class Api::V1::MoneyRecordsControllerTest < ActionDispatch::IntegrationTest
 
     assert '/api/v1/money_records/static' == static_api_v1_money_records_path
     assert_routing({method: :get, path: static_api_v1_money_records_path}, {controller: CONTROLLER_NAME, action: 'static'})
+
+    assert '/api/v1/money_records/static_tag_percent' == static_tag_percent_api_v1_money_records_path
+    assert_routing({method: :get, path: static_tag_percent_api_v1_money_records_path}, {controller: CONTROLLER_NAME, action: 'static_tag_percent'})
   end
 
   test "index" do
@@ -31,7 +34,7 @@ class Api::V1::MoneyRecordsControllerTest < ActionDispatch::IntegrationTest
     assert 1 == page_info.current_page
     assert 2 == page_info.total_count
     assert 1 == page_info.total_pages
-    assert data.money_records.collect {|mr| mr['id']} == davi.money_records.pluck(:id)
+    assert data.money_records.collect {|mr| mr['id']} == davi.money_records.happened_at_desc.pluck(:id)
     imr = data.invest_money_records.first
     assert imr.label == '2019-05-07 支出100.0: 存款'
     assert imr.value == 1
@@ -104,6 +107,13 @@ class Api::V1::MoneyRecordsControllerTest < ActionDispatch::IntegrationTest
     assert 0 == data.total_houseloan
     assert 0 == data.total_houserent
     assert 100 == data.total_invest
-    assert 0 == data.total_invest_return
+    assert 1.56 == data.total_invest_return
+  end
+
+  test "static_tag_percent" do
+    get static_tag_percent_api_v1_money_records_path, headers: request_headers(davi_token)
+    assert suc.code == jbody.code
+    re = {"totals"=>[{"value"=>1.56, "name"=>"收入"}, {"value"=>100.0, "name"=>"支出"}], "incomes"=>[{"value"=>1.56, "name"=>"投资"}], "outgos"=>[]}
+    assert jbody.data.as_json == re
   end
 end

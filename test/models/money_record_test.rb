@@ -14,8 +14,8 @@ class MoneyRecordTest < ActiveSupport::TestCase
 
     income.tag_list.add(:invest)
     income.save
-    assert davi.money_records.tagged_with(:invest).first == income
+    assert davi.money_records.tagged_with(:invest).first == outgo
 
-    income.tag_list
+    assert income.tag_list.first == 'invest'
   end
 end

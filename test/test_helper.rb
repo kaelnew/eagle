@@ -32,6 +32,10 @@ class ActiveSupport::TestCase
     @jbody = Hashie::Mash.new(JSON.parse(@response.body))
   end
 
+  def jbody_with_status
+    @jbody = Hashie::Mash.new(JSON.parse(@response.body).merge(status: @response.status))
+  end
+
   def administrator
     @administrator ||= users(:administrator)
   end

@@ -9,6 +9,10 @@ class Api::V1::ApplicationController < ActionController::API
     render_suc
   end
 
+  def ping
+    render_suc_with_data(user_id: current_user.id)
+  end
+
   private
 
   def current_user
