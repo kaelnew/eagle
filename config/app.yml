@@ -22,6 +22,10 @@ defaults: &defaults
 
   token_expire_duration: 604800 #1.week
   per_page: 50 #分页时每页的条数
+  params_separator: ','
+  qiniu:
+    bucket: bird
+    url_prefix: 'http://bird.cdn.txnhs.com/'
 
   money_records_tags:
     salary: 工资

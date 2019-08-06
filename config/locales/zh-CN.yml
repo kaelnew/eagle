@@ -7,8 +7,17 @@
 
   money_record:
     tag_blank_error: 标签不能为空
-    income: 收入
-    outgo: 支出
 
   server:
     exception: 服务暂不可用
+
+  activerecord:
+    enums:
+      money_record:
+        income_flag:
+          income: 收入
+          outgo: 支出
+        subject:
+          personal: 纯个人
+          other: 纯他人
+          mixed: 个人参股

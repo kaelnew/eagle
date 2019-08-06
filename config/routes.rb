@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
       resources :money_records, except: %i(new edit show) do
         collection do
-          get :all_tag
+          get :options
           get :static
           get :static_tag_percent
         end

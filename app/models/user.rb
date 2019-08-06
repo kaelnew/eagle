@@ -29,6 +29,10 @@ class User < ApplicationRecord
     Setting.accesses[role]
   end
 
+  def upload_photo_to_qiniu!(file_path, file_name)
+    MyQiniu.upload!(file_path, file_name, name)
+  end
+
   class << self
     def current
       Thread.current[:current_user]

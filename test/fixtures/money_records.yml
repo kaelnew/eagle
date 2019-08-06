@@ -5,6 +5,8 @@ outgo:
   amount: 100.00
   happened_at: 2019-05-07
   remark: 存款
+  subject: 2
+  personal_share: 50
 
 income:
   id: 2
@@ -14,3 +16,5 @@ income:
   happened_at: 2019-08-07
   remark: 利息
   parent_id: 1
+  subject: 1
+  personal_share: 0

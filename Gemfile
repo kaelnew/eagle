@@ -30,7 +30,8 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'jwt'
 gem 'suggest_rb' # 用于反向查询method
 gem 'acts-as-taggable-on', '~> 6.0'
-
+gem 'qiniu', '>= 6.9.0'
+gem "enumize"
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

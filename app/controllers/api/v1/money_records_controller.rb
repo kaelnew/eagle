@@ -16,17 +16,19 @@ class Api::V1::MoneyRecordsController < Api::V1::ApplicationController
 
   def static_tag_percent
     @mrs = current_user.money_records
+    @mrs = @mrs.by_subject(params[:subjects].split(Setting.params_separator)) if params[:subjects].present?
     @mrs = @mrs.start_at(params[:start_at]) if params[:start_at].present?
     @mrs = @mrs.end_at(params[:end_at]) if params[:end_at].present?
     @income_mrs = @mrs.income
     @outgo_mrs = @mrs.outgo
     @income_tags = MoneyRecord.tags(@income_mrs)
-    @outgo_tags = MoneyRecord.tags(@outgo_mrs) - %w(invest houseloan houserent)
-    @totals = [Chart::Pie.new(@income_mrs.sum(:amount).to_f, I18n.t('money_record.income')),
-               Chart::Pie.new(@outgo_mrs.sum(:amount).to_f, I18n.t('money_record.outgo'))]
+    @outgo_tags = MoneyRecord.tags(@outgo_mrs)
+    field = params[:personal_share_flag] == 'true' ? :personal_share : :amount
+    @totals = [Chart::Pie.new(@income_mrs.sum(field).to_f, MoneyRecord.income_flag_label(:income)).add_value_to_name,
+               Chart::Pie.new(@outgo_mrs.sum(field).to_f, MoneyRecord.income_flag_label(:outgo)).add_value_to_name]
 
-    @incomes = @income_tags.collect {|tag| Chart::Pie.new(@income_mrs.tagged_with(tag).sum(:amount).to_f, Setting.money_records_tags[tag])}
-    @outgos = @outgo_tags.collect {|tag| Chart::Pie.new(@outgo_mrs.tagged_with(tag).sum(:amount).to_f, Setting.money_records_tags[tag])}
+    @incomes = @income_tags.collect {|tag| Chart::Pie.new(@income_mrs.tagged_with(tag).sum(field).to_f, Setting.money_records_tags[tag]).add_value_to_name}
+    @outgos = @outgo_tags.collect {|tag| Chart::Pie.new(@outgo_mrs.tagged_with(tag).sum(field).to_f, Setting.money_records_tags[tag]).add_value_to_name}
   end
 
   def index
@@ -53,7 +55,7 @@ class Api::V1::MoneyRecordsController < Api::V1::ApplicationController
       end
       render_suc
     else
-      render json: {code: responses.client_error.code, msg: @user.error_msg}
+      render json: {code: responses.client_error.code, msg: @mr.error_msg}
     end
   end
 
@@ -62,8 +64,9 @@ class Api::V1::MoneyRecordsController < Api::V1::ApplicationController
     render_suc
   end
 
-  def all_tag
-    @tags = MoneyRecord.all_tags
+  def options
+    @tag_options = MoneyRecord.tag_formatted_options
+    @subject_options = MoneyRecord.subject_formatted_options
   end
 
   private
@@ -78,7 +81,15 @@ class Api::V1::MoneyRecordsController < Api::V1::ApplicationController
   end
 
   def money_record_params
-    params.require(:money_record).permit(:happened_at, :income_flag, :amount, :parent_id, :remark)
+    @mrp = params.require(:money_record).permit(:happened_at, :income_flag, :amount, :subject, :personal_share, :parent_id, :remark)
+    if @mrp[:parent_id].present?
+      parent = MoneyRecord.find_by(id: @mrp[:parent_id])
+      if parent
+        @mrp[:subject] = parent.subject
+        @mrp[:personal_share] = parent.personal_share_ratio * @mrp[:amount].to_f
+      end
+    end
+    @mrp
   end
 
   def set_money_record

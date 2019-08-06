@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_07_073963) do
+ActiveRecord::Schema.define(version: 2019_07_01_084718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,8 @@ ActiveRecord::Schema.define(version: 2019_05_07_073963) do
     t.bigint "parent_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "subject", default: 0
+    t.decimal "personal_share", precision: 10, scale: 2, default: "0.0"
     t.index ["happened_at"], name: "index_money_records_on_happened_at"
     t.index ["income_flag"], name: "index_money_records_on_income_flag"
     t.index ["parent_id"], name: "index_money_records_on_parent_id"

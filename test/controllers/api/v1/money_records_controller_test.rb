@@ -13,8 +13,8 @@ class Api::V1::MoneyRecordsControllerTest < ActionDispatch::IntegrationTest
     assert_routing({method: :put, path: api_v1_money_record_path(outgo)}, {controller: CONTROLLER_NAME, action: 'update', id: outgo.id.to_s})
     assert_routing({method: :delete, path: api_v1_money_record_path(outgo)}, {controller: CONTROLLER_NAME, action: 'destroy', id: outgo.id.to_s})
 
-    assert '/api/v1/money_records/all_tag' == all_tag_api_v1_money_records_path
-    assert_routing({method: :get, path: all_tag_api_v1_money_records_path}, {controller: CONTROLLER_NAME, action: 'all_tag'})
+    assert '/api/v1/money_records/options' == options_api_v1_money_records_path
+    assert_routing({method: :get, path: options_api_v1_money_records_path}, {controller: CONTROLLER_NAME, action: 'options'})
 
     assert '/api/v1/money_records/static' == static_api_v1_money_records_path
     assert_routing({method: :get, path: static_api_v1_money_records_path}, {controller: CONTROLLER_NAME, action: 'static'})
@@ -36,8 +36,8 @@ class Api::V1::MoneyRecordsControllerTest < ActionDispatch::IntegrationTest
     assert 1 == page_info.total_pages
     assert data.money_records.collect {|mr| mr['id']} == davi.money_records.happened_at_desc.pluck(:id)
     imr = data.invest_money_records.first
-    assert imr.label == '2019-05-07 支出100.0: 存款'
-    assert imr.value == 1
+    assert imr.parent_label == '2019-05-07 支出100.0: 存款'
+    assert imr.parent_value == 1
   end
 
   test "create" do
@@ -84,6 +84,16 @@ class Api::V1::MoneyRecordsControllerTest < ActionDispatch::IntegrationTest
     assert outgo.tag_list == [params[:tag]]
   end
 
+  test "update1" do
+    income_amount = income.amount
+    patch api_v1_money_record_path(income), headers: request_headers(davi_token),
+      params: {money_record: {parent_id: income.parent.id, amount: income_amount}, id: income.id, tag: income.tag_list.first}
+    assert suc == jbody
+    income.reload
+    assert income.subject == income.parent.subject
+    assert income.personal_share == income.parent.personal_share_ratio * income_amount
+  end
+
   test "destroy" do
     assert davi.money_records.first == outgo
     delete api_v1_money_record_path(outgo), headers: request_headers(davi_token)
@@ -91,11 +101,12 @@ class Api::V1::MoneyRecordsControllerTest < ActionDispatch::IntegrationTest
     assert davi.money_records.first == income
   end
 
-  test "all_tag" do
-    get all_tag_api_v1_money_records_path, headers: request_headers(davi_token)
+  test "options" do
+    get options_api_v1_money_records_path, headers: request_headers(davi_token)
     assert_equal suc.code, jbody.code
     assert_equal suc.msg, jbody.msg
-    assert jbody.data.as_json == MoneyRecord.all_tags.as_json
+    re = {"tag_options"=>[{"label"=>"工资", "value"=>"salary"}, {"label"=>"饮食", "value"=>"food"}, {"label"=>"穿着", "value"=>"clothes"}, {"label"=>"住房", "value"=>"living"}, {"label"=>"交通", "value"=>"traffic"}, {"label"=>"通讯", "value"=>"communicate"}, {"label"=>"电子产品", "value"=>"electronic"}, {"label"=>"护肤", "value"=>"skin"}, {"label"=>"学习", "value"=>"learn"}, {"label"=>"旅游", "value"=>"travel"}, {"label"=>"礼物", "value"=>"gift"}, {"label"=>"娱乐", "value"=>"entertain"}, {"label"=>"保险", "value"=>"insurance"}, {"label"=>"育儿", "value"=>"child"}, {"label"=>"养老", "value"=>"parent"}, {"label"=>"人情", "value"=>"human"}, {"label"=>"医疗", "value"=>"medical"}, {"label"=>"投资", "value"=>"invest"}, {"label"=>"房贷", "value"=>"houseloan"}, {"label"=>"房租", "value"=>"houserent"}, {"label"=>"借债", "value"=>"borrow"}, {"label"=>"欠债", "value"=>"debt"}, {"label"=>"理赔", "value"=>"claim"}, {"label"=>"其他", "value"=>"other"}], "subject_options"=>[{"label"=>"纯个人", "value"=>"personal"}, {"label"=>"纯他人", "value"=>"other"}, {"label"=>"个人参股", "value"=>"mixed"}]}
+    assert jbody.data.as_json == re
   end
 
   test "static" do
@@ -113,7 +124,7 @@ class Api::V1::MoneyRecordsControllerTest < ActionDispatch::IntegrationTest
   test "static_tag_percent" do
     get static_tag_percent_api_v1_money_records_path, headers: request_headers(davi_token)
     assert suc.code == jbody.code
-    re = {"totals"=>[{"value"=>1.56, "name"=>"收入"}, {"value"=>100.0, "name"=>"支出"}], "incomes"=>[{"value"=>1.56, "name"=>"投资"}], "outgos"=>[]}
+    re = {"totals"=>[{"value"=>1.56, "name"=>"收入"}, {"value"=>100.0, "name"=>"支出"}], "incomes"=>[{"value"=>1.56, "name"=>"投资"}], "outgos"=>[{"value"=>100.0, "name"=>"投资"}]}
     assert jbody.data.as_json == re
   end
 end

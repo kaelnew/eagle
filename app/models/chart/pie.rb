@@ -5,4 +5,9 @@ class Chart::Pie
     @value = value
     @name = name
   end
+
+  def add_value_to_name
+    @name += " ￥#{@value}"
+    self
+  end
 end

@@ -5,8 +5,8 @@ class MoneyRecordTest < ActiveSupport::TestCase
     assert outgo.outgo?
     assert income.income?
 
-    assert outgo.label == "2019-05-07 支出100.0: 存款"
-    assert outgo.value == 1
+    assert outgo.parent_label == "2019-05-07 支出100.0: 存款"
+    assert outgo.parent_value == 1
 
     mrs = outgo.children
     assert income.in?(mrs)
@@ -14,7 +14,7 @@ class MoneyRecordTest < ActiveSupport::TestCase
 
     income.tag_list.add(:invest)
     income.save
-    assert davi.money_records.tagged_with(:invest).first == outgo
+    assert davi.money_records.tagged_with(:invest).first == income
 
     assert income.tag_list.first == 'invest'
   end
