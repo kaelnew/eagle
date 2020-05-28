@@ -24,7 +24,7 @@ gem 'bootstrap', '~> 4.3.1'
 gem 'mini_racer'
 gem 'rest-client', '~> 2.0.2'
 gem 'hashie'
-gem 'kaminari', '~> 1.1.1' #分页
+gem 'kaminari', '~> 1.2.1' #分页
 gem 'rails-settings-cached', '~> 0.7.2' #缓存
 gem 'rack-cors', :require => 'rack/cors'
 gem 'jwt'
